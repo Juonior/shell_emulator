@@ -1,5 +1,3 @@
-import os
-import tempfile
 from commands import ls, cd, exit_shell, cal, chown, history
 from filesystem import VirtualFileSystem
 from log_handler import LogHandler
@@ -39,7 +37,7 @@ class ShellEmulator:
             try:
                 new_dir = cd.cd(self.fs, self, args)
                 if new_dir is not None:
-                    self.current_dir = new_dir  # Update the current directory if the change was successful
+                    self.current_dir = new_dir
             except FileNotFoundError:
                 print(f"Ошибка: Директория '{args[0]}' не найдена.")
             except NotADirectoryError:
