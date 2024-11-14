@@ -1,3 +1,3 @@
-def history(self):
+def history(shell_gui, self):
     for idx, cmd in enumerate(self.history):
-        print(f"{idx + 1}: {cmd}")
+        shell_gui.display_output(f"{idx + 1}: {cmd}")

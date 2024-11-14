@@ -11,7 +11,6 @@ class ShellEmulator:
         self.logger = LogHandler(log_path, username)
 
         self.fs = VirtualFileSystem(tar_path)
-
         if script_path:
             self._run_start_script(script_path)
     
@@ -20,7 +19,7 @@ class ShellEmulator:
             for line in script:
                 self.execute_command(line.strip())
     
-    def execute_command(self, command):
+    def execute_command(self, command, shell_gui):
         self.logger.log(command)
         self.history.append(command)
 
@@ -32,35 +31,37 @@ class ShellEmulator:
         args = parts[1:]
 
         if cmd == 'ls':
-            ls.ls(self.fs, self.current_dir)
+            ls.ls(self.fs, shell_gui, self.current_dir, args)
         elif cmd == 'cd':
             try:
-                new_dir = cd.cd(self.fs, self, args)
+                new_dir = cd.cd(self.fs, shell_gui, self, args)
                 if new_dir is not None:
                     self.current_dir = new_dir
             except FileNotFoundError:
-                print(f"Ошибка: Директория '{args[0]}' не найдена.")
+                shell_gui.display_output(f"Ошибка: Директория '{args[0]}' не найдена.")
             except NotADirectoryError:
-                print(f"Ошибка: '{args[0]}' не является директорией.")
+                shell_gui.display_output(f"Ошибка: '{args[0]}' не является директорией.")
             except Exception as e:
-                print(f"Ошибка при смене директории: {e}")
+                shell_gui.display_output(f"Ошибка при смене директории: {e}")
         elif cmd == 'exit':
-            exit_shell.exit_shell()
+            exit_shell.exit_shell(shell_gui)
         elif cmd == 'cal':
-            cal.cal(args)
+            cal.cal(shell_gui, args)
         elif cmd == 'chown':
             try:
-                chown.chown(self.fs, args)
+                chown.chown(self.fs ,shell_gui, self, args)
             except FileNotFoundError:
-                print(f"Ошибка: Файл '{args[1]}' не найден.")
+                shell_gui.display_output(f"Ошибка: Файл '{args[1]}' не найден.")
             except Exception as e:
-                print(f"Ошибка при смене владельца: {e}")
+                shell_gui.display_output(f"Ошибка при смене владельца: {e}")
         elif cmd == 'history':
-            history.history(self)
+            history.history(shell_gui, self)
         else:
-            print(f"Команда не найдена: {cmd}")
+            # pass
+            print("GG")
+            shell_gui.display_output(f"Команда не найдена")
     
-    def run(self):
-        while True:
-            command = input(f"{self.username}@shell: {self.current_dir} $ ")
-            self.execute_command(command)
+    # def run(self):
+    #     while True:
+    #         command = input(f"{self.username}@shell: {self.current_dir} $ ")
+    #         self.execute_command(command)

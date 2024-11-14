@@ -1,25 +1,26 @@
-def cd(fs, shell, args):
+import os
+def cd(fs, shell_gui, shell, args):
     if not args:
-        print("Укажите путь.")
+        shell_gui.display_output("Укажите путь.")
         return
 
     new_dir = args[0]
+    
+    while new_dir.startswith(".."):
+        new_dir = new_dir[3:]
+        shell.current_dir = "/".join(shell.current_dir.strip("/").split("/")[:-1])
 
-    # Handle ".." to move up one directory
-    if new_dir == "..":
-        parent_dir = "/".join(shell.current_dir.strip("/").split("/")[:-1])
-        new_dir = f"/{parent_dir}" if parent_dir else "/"
+    if not new_dir.startswith("/"):
+        new_dir = "/" + new_dir
 
-    # Handle relative paths starting with "../"
-    elif new_dir.startswith("../"):
-        levels_up = new_dir.count("..")
-        current_parts = shell.current_dir.strip("/").split("/")
-        new_parts = current_parts[:-levels_up] 
-        new_dir = "/" + "/".join(new_parts) if new_parts else "/"
+    normalized_dir = os.path.normpath(new_dir)
 
-    # Handle relative paths
-    elif not new_dir.startswith("/"):
-        new_dir = f"{shell.current_dir}/{new_dir}".replace("//", "/")
+    try:
+        result_dir = fs.change_dir(shell.current_dir, normalized_dir)
+        shell.current_dir = result_dir
 
-    # Attempt to change the directory
-    return fs.change_dir(shell.current_dir, new_dir)  # Return new directory directly
+        current_dir_display = f"{shell.username}@shell: {shell.current_dir} $ "
+        shell_gui.display_output(current_dir_display)
+    except FileNotFoundError as e:
+        shell_gui.display_output(e)
+

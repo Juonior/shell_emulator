@@ -1,3 +1,3 @@
-def exit_shell():
-    print("Выход из оболочки...")
+def exit_shell(shell_gui):
+    shell_gui.display_output("Выход из оболочки...")
     exit()
