@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 from emulator import ShellEmulator
 
+
 class ShellGUI:
     def __init__(self, username, tar_path, log_path, script_path=None):
         self.shell = ShellEmulator(username, tar_path, log_path, script_path)
