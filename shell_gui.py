@@ -5,7 +5,7 @@ from emulator import ShellEmulator
 
 class ShellGUI:
     def __init__(self, username, tar_path, log_path, script_path=None):
-        self.shell = ShellEmulator(username, tar_path, log_path, script_path)
+        self.shell = ShellEmulator(username, tar_path, log_path)
 
         self.root = tk.Tk()
         self.root.title(f"{self.shell.username}@shell")
@@ -23,7 +23,6 @@ class ShellGUI:
         self.command_entry.grid(row=1, column=0, padx=10, pady=5)
         self.update_command_entry()
 
-        # Output display area (scrollable terminal output)
         self.output_display = scrolledtext.ScrolledText(self.root, width=80, height=20, wrap=tk.WORD, state=tk.DISABLED, bg="#1e1e1e", fg="#ffffff", font=self.font)
         self.output_display.grid(row=0, column=0, padx=10, pady=10)
 
@@ -42,12 +41,13 @@ class ShellGUI:
     def execute_command(self):
         """Execute command entered in the command input field"""
         command = self.command_entry.get().strip()  # Получаем строку из поля ввода и убираем пробелы по бокам
+        # print(command)
 
         # Убираем префикс (например, "user1@shell: / $ "), оставляя только команду
         if command.startswith(f"{self.shell.username}@shell: {self.shell.current_dir} $ "):
             command = command[len(f"{self.shell.username}@shell: {self.shell.current_dir} $ "):].strip()
-
         if command:  # Если команда не пустая
+            print(command)
             self.shell.execute_command(command, self)  # Выполнение команды
             # self.display_output(command)  # Показать вывод команды
 

@@ -74,7 +74,7 @@ python main.py --username user1 --fs vfs.tar --log session_log.csv
 
 ```bash
 ls
-cd home/user
+cd test_dir/home/user
 ls
 ```
 

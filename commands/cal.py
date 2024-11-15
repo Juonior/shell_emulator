@@ -57,4 +57,4 @@ def display_year(shell_gui, year):
     shell_gui.display_output(f"{year}".center(28))
     for month in range(1, 13):
         cal_text = calendar.month(year, month)
-        shell_gui.display_output(cal_text, end="\n\n")
+        shell_gui.display_output(cal_text+"\n\n")

@@ -3,21 +3,16 @@ from filesystem import VirtualFileSystem
 from log_handler import LogHandler
 
 class ShellEmulator:
-    def __init__(self, username, tar_path, log_path, script_path=None):
+    def __init__(self, username, tar_path, log_path):
         self.username = username
         self.history = []
+
         self.current_dir = '/'
 
         self.logger = LogHandler(log_path, username)
 
         self.fs = VirtualFileSystem(tar_path)
-        if script_path:
-            self._run_start_script(script_path)
-    
-    def _run_start_script(self, script_path):
-        with open(script_path, 'r') as script:
-            for line in script:
-                self.execute_command(line.strip())
+
     
     def execute_command(self, command, shell_gui):
         self.logger.log(command)
@@ -57,11 +52,5 @@ class ShellEmulator:
         elif cmd == 'history':
             history.history(shell_gui, self)
         else:
-            # pass
-            print("GG")
-            shell_gui.display_output(f"Команда не найдена")
+            shell_gui.display_output("Команда не найдена")
     
-    # def run(self):
-    #     while True:
-    #         command = input(f"{self.username}@shell: {self.current_dir} $ ")
-    #         self.execute_command(command)
