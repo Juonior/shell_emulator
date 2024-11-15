@@ -1,5 +1,5 @@
 import argparse
-from shell_gui import ShellGUI  # Импортируем класс ShellGUI
+from shell_gui import ShellGUI 
 
 def main():
     parser = argparse.ArgumentParser(description="Shell Emulator GUI")
