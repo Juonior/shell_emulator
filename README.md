@@ -100,3 +100,15 @@ python main.py --username user1 --fs vfs.tar --log session_log.csv --config star
 - `cal` - Просмотр календаря.
 - `history` - Просмотр введённых команд.
 - `exit` - Выйти из эмулятора оболочки.
+
+## Тесты
+
+Для тестирования функций используется фреймворк pytest
+Тестируются:
+- cd_command_failure
+- cd_command_success
+- chown_command_failure
+- chown_command_success
+- history_command
+- ls_command
+![Тесты](https://i.imgur.com/3HnI26y.png)
