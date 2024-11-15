@@ -76,7 +76,8 @@ class ShellGUI:
             return f".../{truncated}"
         return path
 
-    def display_output(self, output):
+    def display_output(self, *output):
+        output = " ".join(output)
         """Display the result of a command in the output window"""
         self.output_display.config(state=tk.NORMAL)
         self.output_display.insert(tk.END, f"{output}\n")
